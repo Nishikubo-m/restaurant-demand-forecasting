@@ -60,6 +60,7 @@ src/
   availability.py       販売期間・参加店舗による販売可能性
   baselines.py          過去平均による基準予測
   adjusted_baseline.py  価格・祝日・店舗成長を考慮した平均予測
+  forecast.py           天候・季節・席構成を考慮した平均予測
   metrics.py            6層集計と時系列検証スコア
   runner.py             時系列分割、予測、評価、成果物保存
   submission.py         配布された公式変換・検証スクリプトの呼び出し
@@ -120,6 +121,44 @@ uv run python -m exp.exp003_shared_baseline.run
 | [exp023](exp/exp023_layout_item/README.md) | 最新レイアウトの商品別水準（不採用） | 0.432513 |
 | [exp024](exp/exp024_adjusted_month/README.md) | レイアウト水準を除いた月次倍率 | 0.401270 |
 | [exp025](exp/exp025_nonholiday/README.md) | 非祝日の条件付き平均 | 0.396673 |
+| [exp026](exp/exp026_category_season/README.md) | カテゴリ別の月次倍率（不採用） | 0.396867 |
+| [exp027](exp/exp027_near_holiday/README.md) | 祝日前後の非祝日（不採用） | 0.397538 |
+| [exp028](exp/exp028_holiday_date/README.md) | 祝日ごとの条件付き平均（不採用） | 0.399902 |
+| [exp029](exp/exp029_dayofyear_smooth/README.md) | 日付近傍の平滑化平均 | 0.393254 |
+| [exp030](exp/exp030_store_dayofyear/README.md) | 店舗別の日付近傍平均 | 0.393119 |
+| [exp031](exp/exp031_adjusted_weather/README.md) | レイアウト・月別水準を除いた天候別平均 | 0.392608 |
+| [exp032](exp/exp032_adjusted_holiday/README.md) | レイアウト水準を除いた祝日倍率 | 0.390239 |
+| [exp033](exp/exp033_adjusted_coupon/README.md) | レイアウト水準を除いた施策倍率（不採用） | 0.390396 |
+| [exp034](exp/exp034_unit_elasticity/README.md) | 価格上昇と数量減が相殺する仮定（不採用） | 0.430591 |
+| [exp035](exp/exp035_partial_item_layout/README.md) | 商品別レイアウト倍率の部分的反映（不採用） | 0.391715 |
+| [exp038](exp/exp038_month_nonholiday/README.md) | 祝日水準を除いた月次倍率（不採用） | 0.390898 |
+| [exp039](exp/exp039_seated_level/README.md) | 着席組数の最新レイアウト水準（不採用） | 0.424181 |
+| [exp040](exp/exp040_shared_forecast/README.md) | 共通処理による exp032 の再現 | 0.390239 |
+| [exp041](exp/exp041_planned_layout/README.md) | 予定されたレイアウト変更（不採用） | 0.466053 |
+| [exp042](exp/exp042_matched_layout_growth/README.md) | 同一レイアウトで比較した年次変化 | 0.384175 |
+| [exp043](exp/exp043_full_matched_growth/README.md) | 同一年次変化の全量継続（不採用） | 0.388937 |
+| [exp044](exp/exp044_category_growth/README.md) | カテゴリ別の同一条件での年次変化（不採用） | 0.384599 |
+| [exp045](exp/exp045_nonholiday_growth/README.md) | 非祝日に限定した同一条件の年次変化 | 0.383407 |
+| [exp046](exp/exp046_recent_matched_growth/README.md) | 直近四半期の同一条件の年次変化 | 0.376520 |
+| [exp047](exp/exp047_horizon_growth/README.md) | 予測期間の経過に応じた年次変化 | 0.374720 |
+| [exp048](exp/exp048_paired_growth/README.md) | 364日前を対応付けた年次変化 | 0.374623 |
+| [exp054](exp/exp054_rolling_quarter/README.md) | 基準日に合わせた直近3か月 | 0.374623 |
+| [exp056](exp/exp056_cross_layout_growth/README.md) | レイアウト水準を調整した前年ペア（不採用） | 0.382160 |
+| [exp057](exp/exp057_constant_quantity/README.md) | 定価変更後の数量一定の仮定（不採用） | 0.404467 |
+| [exp058](exp/exp058_weekday_growth/README.md) | 曜日別の直近年次変化（不採用） | 0.376655 |
+| [exp059](exp/exp059_recent_level/README.md) | 重み付き履歴平均から直近水準への補正 | 0.374501 |
+| [exp060](exp/exp060_fallback_level/README.md) | 直近水準補正の年間比較への補完 | 0.372027 |
+| [exp062](exp/exp062_eligible_level/README.md) | 販売可能日数に応じた直近水準補正（不採用） | 0.372068 |
+| [exp064](exp/exp064_season_adjusted_layout/README.md) | 月別傾向を除いた最新レイアウト水準 | 0.371475 |
+| [exp066](exp/exp066_robust_history/README.md) | 極端値候補の上限化（不採用） | 0.371478 |
+| [exp049](exp/exp049_category_paired_growth/README.md) | カテゴリ別の364日ペア年次変化（不採用） | 0.374727 |
+| [exp050](exp/exp050_weighted_paired_growth/README.md) | 直近四半期を重視した通年ペア（不採用） | 0.385467 |
+| [exp051](exp/exp051_arrival_growth/README.md) | 来店組数の同一条件の年次変化（不採用） | 0.376211 |
+| [exp052](exp/exp052_weather_adjusted_growth/README.md) | 過去の天候構成を調整した前年比（不採用） | 0.375012 |
+
+2023年6月末を基準日とした別期間の参考検証は [exp053](exp/exp053_2023_backtest/README.md)、[exp055](exp/exp055_rolling_backtest/README.md)、[exp061](exp/exp061_level_backtest/README.md)、[exp063](exp/exp063_eligible_backtest/README.md)、[exp065](exp/exp065_layout_backtest/README.md) を参照。2022年内の半年予測誤差を尺度とするため、通年スコアとは比較できない。
+
+参考として2024年6月末を基準日にした後半6か月の検証では、[exp036](exp/exp036_halfyear_032/README.md) が0.332109、[exp037](exp/exp037_halfyear_025/README.md) が0.340059。検証期間が上記の通年検証と重なり、予測期間も異なるため、独立した検証や通年スコアとは扱わない。
 
 スコアは検証用に再計算した尺度による**ローカル参考値**で、2025年の公式スコアではない。exp002・exp003 の検証には、2024年の販売・企画予定が2023年末に既知だったという仮定がある。exp001 の6層スコアの算出方法も含め、検証方法は [eda/07_validation.ipynb](eda/07_validation.ipynb) を参照。
 
