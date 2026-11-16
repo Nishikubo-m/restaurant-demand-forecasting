@@ -59,6 +59,7 @@ src/
   data.py               生データの読み込み
   availability.py       販売期間・参加店舗による販売可能性
   baselines.py          過去平均による基準予測
+  adjusted_baseline.py  価格・祝日・店舗成長を考慮した平均予測
   metrics.py            6層集計と時系列検証スコア
   runner.py             時系列分割、予測、評価、成果物保存
   submission.py         配布された公式変換・検証スクリプトの呼び出し
@@ -97,6 +98,28 @@ uv run python -m exp.exp003_shared_baseline.run
 | [exp001](exp/exp001_baseline/README.md) | 店舗・商品・曜日別の過去平均 | 1.198543 |
 | [exp002](exp/exp002_availability_weekday/README.md) | 販売可能性を考慮した曜日別平均 | 0.828145 |
 | [exp003](exp/exp003_shared_baseline/README.md) | 共通処理による exp002 の再現 | 0.828145 |
+| [exp004](exp/exp004_recent_weight/README.md) | 直近年の重み付け | 0.757162 |
+| [exp005](exp/exp005_holiday_factor/README.md) | 祝日倍率 | 0.741816 |
+| [exp006](exp/exp006_price_normalization/README.md) | 価格による正規化 | 0.626834 |
+| [exp007](exp/exp007_month_factor/README.md) | 商品別の月別倍率（不採用） | 0.632723 |
+| [exp008](exp/exp008_store_growth/README.md) | 店舗別の前年成長率 | 0.593427 |
+| [exp009](exp/exp009_category_holiday/README.md) | カテゴリ別の祝日倍率 | 0.593219 |
+| [exp010](exp/exp010_monthly_means/README.md) | 月別平均（不採用） | 0.641097 |
+| [exp011](exp/exp011_layout_means/README.md) | 席レイアウト別平均（不採用） | 0.763858 |
+| [exp012](exp/exp012_shared_adjusted/README.md) | 共通処理による exp009 の再現 | 0.593219 |
+| [exp013](exp/exp013_price_elasticity/README.md) | 価格上昇による数量減の仮定 | 0.562180 |
+| [exp014](exp/exp014_store_month_factor/README.md) | 店舗別の月次倍率（不採用） | 0.591725 |
+| [exp015](exp/exp015_coupon_context/README.md) | クーポン予定の条件付き平均 | 0.561457 |
+| [exp016](exp/exp016_recent_growth/README.md) | 直近四半期の店舗成長率（不採用） | 0.592629 |
+| [exp017](exp/exp017_near_year_mean/README.md) | 前年近傍の同曜日平均（不採用） | 0.570941 |
+| [exp018](exp/exp018_normal_rain/README.md) | 降水確率平年値による条件付き平均 | 0.560128 |
+| [exp019](exp/exp019_latest_layout_level/README.md) | 最新レイアウトの店舗水準 | 0.432661 |
+| [exp020](exp/exp020_layout_month_factor/README.md) | 最新レイアウトと月次倍率（不採用） | 0.461224 |
+| [exp021](exp/exp021_layout_category/README.md) | 最新レイアウトの店舗・カテゴリ別水準 | 0.429323 |
+| [exp022](exp/exp022_partial_growth/README.md) | 最新水準への部分的な年次成長（不採用） | 0.471122 |
+| [exp023](exp/exp023_layout_item/README.md) | 最新レイアウトの商品別水準（不採用） | 0.432513 |
+| [exp024](exp/exp024_adjusted_month/README.md) | レイアウト水準を除いた月次倍率 | 0.401270 |
+| [exp025](exp/exp025_nonholiday/README.md) | 非祝日の条件付き平均 | 0.396673 |
 
 スコアは検証用に再計算した尺度による**ローカル参考値**で、2025年の公式スコアではない。exp002・exp003 の検証には、2024年の販売・企画予定が2023年末に既知だったという仮定がある。exp001 の6層スコアの算出方法も含め、検証方法は [eda/07_validation.ipynb](eda/07_validation.ipynb) を参照。
 
